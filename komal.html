@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="scripts/d3.js"></script>
+    <script src="scripts/d3-annotation.min.js"></script>
+    <meta http-equiv="Access-Control-Allow-Origin" content="*"/>
+    <script src="scripts/scatter.js"></script>
+    <button onclick="update(data1)">Variable 1</button>
+    <button onclick="update(data2)">Variable 2</button>
+
+    <title>CS 498 DV</title>
+    <style>
+
+        .bar{
+            fill: navy;
+        }
+        .bar:hover {
+          fill: brown;
+        }
+    </style>
+    
+  </head>
+  <body onload="main()">
+  
+      <svg width=800 height=800></svg>
+      <div id="my_dataviz"></div>
+      <script src="trial.js"></script> 
+  </body>
+</html>

@@ -1,0 +1,124 @@
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Visualization Project">
+  <meta name="author" content="Komal Kadian>
+    <link rel=" icon" href="../../favicon.ico">
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+    integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <script src="scripts/mycss.js"></script>
+  <script href="styles/styles.css" rel="stylesheet"></script>
+  <script src="scripts/d3.js"></script>
+  <script src="scripts/d3-annotation.min.js"></script>
+  <meta http-equiv="Access-Control-Allow-Origin" content="*"/>
+  <script src="scripts/scatter.js"></script>
+  <title>Final Project for CS498 - Data Visualization </title>
+  <style>
+
+    .bar{
+        fill: navy;
+    }
+    .bar:hover {
+      fill: brown;
+    }
+</style>
+</head>
+
+<body onload="main()">
+
+  <!-- Fixed navbar -->
+  <nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+          aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">CS498 - Final Project</a>
+      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="home.html">Home</a></li>
+          <li><a href="second.html">Second</a></li>
+          <li><a href="third.html">Third</a></li>
+          <li><a href="final.html">Final Chart</a></li>
+        </ul>
+      </div>
+      <!--/.nav-collapse -->
+    </div>
+  </nav>
+
+  <!-- Begin page content -->
+
+
+  <br>
+  <div class="container">
+    <svg width=600 height=600></svg>
+    <div id="my_dataviz"></div>
+
+    <br>
+    <div class="page-header">
+      <h1>This is Project Title</h1>
+    </div>
+    <p class="lead">
+      Data Location - Please modify
+
+    <div class="text-center">
+      <a href="Link Here" target="_blank">
+        <p class="lead">Link here</p>
+      </a>
+    </div>
+    <p class="lead">
+      Any Description
+
+
+
+    </p>
+    <br>
+
+    <div class="container" id="aboutVisualization" style="padding-bottom: 30px;">
+      <button class="accordion">About the Visualization, Home Page</button>
+      <div class="panel">
+        <h3>Visualization Narrative</h3>
+        <p class="lead">
+          Data for your Narative and your Story
+      </div>
+
+    </div>
+    <div class="container">
+      <div class="col-lg-12 text-center">
+        <a href="second.html">
+          <button type="button" class="btn btn-default btn-lg btn-primary">
+            <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>Next
+          </button></a>
+      </div>
+
+
+    </div>
+
+  </div><!-- /.container -->
+
+
+
+
+  <footer class="footer   text-center">
+    <div class="container">
+      <p class="text-muted"></p>
+      <strong>Author <a href="www.google.com">Komal Kadian</a></strong>
+
+    </div>
+
+  </footer>
+
+  <script src="scripts/trial.js"></script>
+
+</body>
+
+</html>
