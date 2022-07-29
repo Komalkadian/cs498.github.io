@@ -26,8 +26,45 @@ function main() {
                   .style("text-anchor", "end");
 
             g.append("g").call(d3.axisLeft(yScale).tickFormat(function(d){ return d;}).ticks(10));
+
             svg.append("text").attr("class", "x label").attr("text-anchor", "end")
-            .attr("x", width/1.5).attr("y", height + 200).text("Regions");
+            .attr("x", width/1.5).attr("y", height + 180).text("Regions");
+
+            svg.append("text").attr("text-anchor", "end")
+            .attr("x", width/5).attr("y", height-500).text("Total Deaths").attr("text-anchor", "start");
+//------------------//
+
+
+const type = d3.annotationLabel
+
+const annotations = [
+
+{
+  note: {
+    label: "Scale representing total deaths across multiple regions",
+    
+  },
+  //can use x, y directly instead of data
+
+  color: d3.rgb("Darkblue"),
+  x: 100,
+  y: 200,
+  dy: 137,
+  dx: 162
+}]
+
+
+
+const makeAnnotations = d3.annotation()
+
+  .annotations(annotations)
+
+d3.select("svg")
+  .append("g")
+  .attr("class", "annotation-group")
+  .call(makeAnnotations)
+
+
     // create a tooltip
       const Tooltip = d3.select("#my_dataviz")
       .append("div")
