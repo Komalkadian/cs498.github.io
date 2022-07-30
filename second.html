@@ -1,3 +1,5 @@
+<!DOCTYPE html>
+
 <html lang="en"><head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,25 +12,21 @@
     integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
   <script src="scripts/mycss.js"></script>
   <script href="styles/styles.css" rel="stylesheet"></script>
-  <script src="scripts/d3.js"></script>
-  <script src="scripts/d3-annotation.min.js"></script>
+  <script src="https://d3js.org/d3.v6.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-annotation/2.5.1/d3-annotation.min.js"></script>
+
+  
+
+
   <meta http-equiv="Access-Control-Allow-Origin" content="*"/>
-  <script src="scripts/latestbar.js"></script>
+ <!------>
+  
   <title>Final Project for CS498 - Data Visualization </title>
-  <style>
 
-    .bar{
-        fill: navy;
-    }
-    .bar:hover {
-      fill: brown;
-    }
-</style>
-  </head>
 
-  <body onload="main()">
 
     <!-- Fixed navbar -->
+
     <nav class="navbar navbar-default navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
@@ -52,25 +50,288 @@
     </nav>
 
     <br>
+    <br>
 
         <div class="container">
             <br>
-            <svg width=600 height=600></svg>
+
+            <br>
+
+            <br>
+           
             <div id="my_dataviz"></div>
 
+            
+
+            <script>
+
+              // set the dimensions and margins of the graph
+             
+          
+          
+              const margin = {top: 30, right: 150, bottom: 60, left: 100},
+                  width = 850 - margin.left - margin.right,
+                  height = 600- margin.top - margin.bottom;
+              
+              // append the svg object to the body of the page
+              const svg = d3.select("#my_dataviz")
+                .append("svg")
+                  .attr("width", width + margin.left + margin.right)
+                  .attr("height", height + margin.top + margin.bottom)
+                .append("g")
+                  .attr("transform", `translate(${margin.left},${margin.top})`);
+              
+              //Read the data
+              d3.csv("country_wise_latest.csv").then( function(data) {
+              
+                // ---------------------------//
+                //       AXIS  AND SCALE      //
+                // ---------------------------//
+              
+                // Add X axis
+                const x = d3.scaleLinear()
+                  .domain([0, 100])
+                  .range([ 0, width ]);
+                svg.append("g")
+                  .attr("transform", `translate(0, ${height})`)
+                  .call(d3.axisBottom(x).ticks(10));
+              
+                // Add X axis label:
+                svg.append("text")
+                    .attr("text-anchor", "end")
+                    .attr("x", width)
+                    .attr("y", height+50 )
+                    .text("Recover Rate");
+              
+                // Add Y axis
+                const y = d3.scaleLinear()
+                  .domain([0, 30])
+                  .range([ height, 0]);
+                svg.append("g")
+                  .call(d3.axisLeft(y));
+              
+                // Add Y axis label:
+                svg.append("text")
+                    .attr("text-anchor", "end")
+                    .attr("x", 0)
+                    .attr("y", -20 )
+                    .text("Death Rate")
+                    .attr("text-anchor", "start")
+              
+                // Add a scale for bubble size
+                const z = d3.scaleSqrt()
+                  .domain([20000, 1310000])
+                  .range([ 5, 30]);
+              
+                // Add a scale for bubble color
+                const myColor = d3.scaleOrdinal()
+                  .domain(["Asia", "Europe", "Americas", "Africa", "Mediterranean", "Pacific"])
+                  .range(d3.schemeSet1);
+          
+              // annotation//
+              //------------//
+          
+          
+              const annotations = [
+            {
+              note: {
+                
+                title: "Bubble size representing scale of Covid cases",
+                align: "middle",  // try right or left
+                wrap: 160  // try something smaller to see text split in several lines
+                
+              },
+             
+              color: d3.rgb("black"),
+              x: 100,
+              y: 280,
+              dy: 130,
+              dx: 100
+            }
+          
+           
+          ]
+          
+          const makeAnnotations = d3.annotation()
+            .annotations(annotations)
+          d3.select("svg")
+            .append("g")
+            .call(makeAnnotations)
+          
+          
+          
+              
+                // ---------------------------//
+                //      TOOLTIP               //
+                // ---------------------------//
+              
+                // -1- Create a tooltip div that is hidden by default:
+                const tooltip = d3.select("#my_dataviz")
+                  .append("div")
+                    .style("opacity", 0)
+                    .attr("class", "tooltip")
+                    .style("background-color", "black")
+                    .style("border-radius", "5px")
+                    .style("padding", "10px")
+                    .style("color", "white")
+              
+                // -2- Create 3 functions to show / update (when mouse move but stay on same circle) / hide the tooltip
+                const showTooltip = function(event,d) {
+                  tooltip
+                    .transition()
+                    .duration(200)
+                  tooltip
+                    .style("opacity", 1)
+                   
+                    .html("Country: " +d.Country +" <br>Cases: "+ d.Confirmed )
+                    .style("left", (event.x)/2 + "px")
+                    .style("top", (event.y)/2-50 + "px")
+                }
+                const moveTooltip = function(event, d) {
+                  tooltip
+                    .style("left", (event.x)/2 + "px")
+                    .style("top", (event.y)/2-50 + "px")
+                }
+                const hideTooltip = function(event, d) {
+                  tooltip
+                    .transition()
+                    .duration(200)
+                    .style("opacity", 0)
+                }
+              
+              
+                // ---------------------------//
+                //       HIGHLIGHT GROUP      //
+                // ---------------------------//
+              
+                // What to do when one group is hovered
+                const highlight = function(event, d){
+                  // reduce opacity of all groups
+                  d3.selectAll(".bubbles").style("opacity", .05)
+                  // expect the one that is hovered
+                  d3.selectAll("."+d).style("opacity", 1)
+                }
+              
+                // And when it is not hovered anymore
+                const noHighlight = function(event, d){
+                  d3.selectAll(".bubbles").style("opacity", 1)
+                }
+              
+              
+                // ---------------------------//
+                //       CIRCLES              //
+                // ---------------------------//
+              
+                // Add dots
+                svg.append('g')
+                  .selectAll("dot")
+                  .data(data)
+                  .join("circle")
+                    .attr("class", function(d) { return "bubbles " + d.Region})
+                    .attr("cx", function(d) { return x(d.Recoveredrate);})
+                    .attr("cy", function(d) { return y(d.Deathrate);})
+                    .attr("r", function(d) { return  z(d.Confirmed);})
+                    .style("fill", d => myColor(d.Region))
+                  // -3- Trigger the functions for hover
+                  .on("mouseover", showTooltip )
+                  .on("mousemove", moveTooltip )
+                  .on("mouseleave", hideTooltip )
+              
+              
+              
+                  // ---------------------------//
+                  //       LEGEND              //
+                  // ---------------------------//
+              
+                  // Add legend: circles
+                  const valuesToShow = [100, 10000, 100000]
+                  const xCircle = 670
+            
+                  const xLabel = 630
+                  svg
+                    .selectAll("legend")
+                    .data(valuesToShow)
+                    .join("circle")
+                      .attr("cx", xCircle)
+                      .attr("cy", d => height - 100 - z(d))
+                      .attr("r", d => z(d))
+                      .style("fill", "none")
+                      .attr("stroke", "black")
+              
+                  // Add legend: segments
+                  svg
+                    .selectAll("legend")
+                    .data(valuesToShow)
+                    .join("line")
+                      .attr('x1', d => xCircle + z(d))
+                      .attr('x2', xLabel)
+                      .attr('y1', d => height - 100 - z(d))
+                      .attr('y2', d => height - 100 - z(d))
+                      .attr('stroke', 'black')
+                      .style('stroke-dasharray', ('2,2'))
+              
+                  // Add legend: labels
+                  svg
+                    .selectAll("legend")
+                    .data(valuesToShow)
+                    .join("text")
+                      .attr('x', xLabel)
+                      .attr('y', d => height - 100 - z(d))
+                      .text( d => d/1000000)
+                      .style("font-size", 10)
+                      .attr('alignment-baseline', 'middle')
+              
+                  // Legend title
+                  svg.append("text")
+                    .attr('x', xCircle)
+                    .attr("y", height- 100 +30 )
+                    .text("Cases(T)")
+                    .attr("text-anchor", "right")
+              
+                  // Add one dot in the legend for each name.
+                  const size = 20
+                  const allgroups = ["Asia", "Europe", "Americas", "Africa", "Mediterranean", "Pacific"]
+                  svg.selectAll("myrect")
+                    .data(allgroups)
+                    .join("circle")
+                      .attr("cx", 390)
+                      .attr("cy", (d,i) => 10 + i*(size+5)) // 100 is where the first dot appears. 25 is the distance between dots
+                      .attr("r", 10)
+                      .style("fill", d =>  myColor(d))
+                      .on("mouseover", highlight)
+                      .on("mouseleave", noHighlight)
+              
+                  // Add labels beside legend dots
+                  svg.selectAll("mylabels")
+                    .data(allgroups)
+                    .enter()
+                    .append("text")
+                      .attr("x", 390 + size*.8)
+                      .attr("y", (d,i) =>  i * (size + 5) + (size/2)) // 100 is where the first dot appears. 25 is the distance between dots
+                      .style("fill", d => myColor(d))
+                      .text(d => d)
+                      .attr("text-anchor", "left")
+                      .style("alignment-baseline", "middle")
+                      .on("mouseover", highlight)
+                      .on("mouseleave", noHighlight)
+                })
+              
+              </script>
           <div class="page-header">
-            <h1>Second Chart</h1>
+            <h1>Death Rate/Recover Rate View</h1>
           </div>
 
           <p class="lead">
-            Description for Second Chart.</p>
+            The dashboard represents the Death rate and Recover rate for each country in a 
+          given Region and total number of Covid cases till date.  The Countries can be highlighted
+          by hovering over the Region legend as well as the names and values can be seen by using
+          the tooltip (hovering) over the bubble itself.
+        </p>
 
 
 
                         <div class="container">
-                          <p class="lead">
-                             Description here
-                          </p>
+                          
 
                         </div>
 
@@ -111,10 +372,7 @@
     
           </footer>
 
-
-
-
-          <script src="scripts/trial.js"></script>
 </body>
+
 </html>
 
