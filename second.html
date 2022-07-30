@@ -8,10 +8,7 @@
     <meta name="author" content="Komal Kadian>
     <link rel="icon" href="../../favicon.ico">
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-    integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-  <script src="scripts/mycss.js"></script>
-  <script href="styles/styles.css" rel="stylesheet"></script>
+   
   <script src="https://d3js.org/d3.v6.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-annotation/2.5.1/d3-annotation.min.js"></script>
 
@@ -25,17 +22,10 @@
 
 
 
-    <!-- Fixed navbar -->
+  
 
     <nav class="navbar navbar-default navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
+     
           <a class="navbar-brand" href="#">CS498 - Final Project</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
@@ -45,7 +35,7 @@
             <li ><a href="third.html">Third</a></li>
             <li ><a href="final.html">Final</a></li>
           </ul>
-        </div><!--/.nav-collapse -->
+        </div>
       </div>
     </nav>
 
@@ -65,7 +55,6 @@
 
             <script>
 
-              // set the dimensions and margins of the graph
              
           
           
@@ -73,7 +62,7 @@
                   width = 850 - margin.left - margin.right,
                   height = 600- margin.top - margin.bottom;
               
-              // append the svg object to the body of the page
+              
               const svg = d3.select("#my_dataviz")
                 .append("svg")
                   .attr("width", width + margin.left + margin.right)
@@ -86,7 +75,7 @@
               
                 // ---------------------------//
                 //       AXIS  AND SCALE      //
-                // ---------------------------//
+               
               
                 // Add X axis
                 const x = d3.scaleLinear()
@@ -137,9 +126,8 @@
               note: {
                 
                 title: "Bubble size representing scale of Covid cases",
-                align: "middle",  // try right or left
-                wrap: 160  // try something smaller to see text split in several lines
-                
+                align: "middle",  
+                wrap: 160  
               },
              
               color: d3.rgb("black"),
@@ -165,7 +153,7 @@
                 //      TOOLTIP               //
                 // ---------------------------//
               
-                // -1- Create a tooltip div that is hidden by default:
+                
                 const tooltip = d3.select("#my_dataviz")
                   .append("div")
                     .style("opacity", 0)
@@ -175,7 +163,7 @@
                     .style("padding", "10px")
                     .style("color", "white")
               
-                // -2- Create 3 functions to show / update (when mouse move but stay on same circle) / hide the tooltip
+                
                 const showTooltip = function(event,d) {
                   tooltip
                     .transition()
@@ -204,15 +192,15 @@
                 //       HIGHLIGHT GROUP      //
                 // ---------------------------//
               
-                // What to do when one group is hovered
+              
                 const highlight = function(event, d){
-                  // reduce opacity of all groups
+                  
                   d3.selectAll(".bubbles").style("opacity", .05)
-                  // expect the one that is hovered
+                 
                   d3.selectAll("."+d).style("opacity", 1)
                 }
               
-                // And when it is not hovered anymore
+                
                 const noHighlight = function(event, d){
                   d3.selectAll(".bubbles").style("opacity", 1)
                 }
@@ -295,7 +283,7 @@
                     .data(allgroups)
                     .join("circle")
                       .attr("cx", 390)
-                      .attr("cy", (d,i) => 10 + i*(size+5)) // 100 is where the first dot appears. 25 is the distance between dots
+                      .attr("cy", (d,i) => 10 + i*(size+5)) 
                       .attr("r", 10)
                       .style("fill", d =>  myColor(d))
                       .on("mouseover", highlight)
@@ -307,7 +295,7 @@
                     .enter()
                     .append("text")
                       .attr("x", 390 + size*.8)
-                      .attr("y", (d,i) =>  i * (size + 5) + (size/2)) // 100 is where the first dot appears. 25 is the distance between dots
+                      .attr("y", (d,i) =>  i * (size + 5) + (size/2)) 
                       .style("fill", d => myColor(d))
                       .text(d => d)
                       .attr("text-anchor", "left")
@@ -358,7 +346,7 @@
                          </div>
 
 
-        </div><!-- /.container -->
+        </div>
 
 
 
